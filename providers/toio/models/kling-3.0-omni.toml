@@ -1,0 +1,5 @@
+# Pricing: toio-model-price.json (accessed 2026-08-20)
+base_model = "kuaishou/kling-3.0-omni"
+
+[cost]
+request = 0.147059

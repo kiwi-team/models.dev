@@ -1,0 +1,7 @@
+# Pricing: toio-model-price.json (accessed 2026-08-20)
+# ToioApi ratio conversion: model_ratio 0.043 * 2 USD/MTok; completion_ratio 10.
+base_model = "alibaba/qwen2.5-omni-7b"
+
+[cost]
+input = 0.086
+output = 0.86

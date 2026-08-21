@@ -39,12 +39,14 @@ export interface ReasoningOptionBudgetTokens {
 /** How reasoning can be configured for a model. */
 export type ReasoningOption = ReasoningOptionToggle | ReasoningOptionEffort | ReasoningOptionBudgetTokens
 
-/** Pricing in USD per million tokens. */
+/** Pricing in USD per million tokens and/or USD per request. */
 export interface Cost {
   /** Input (prompt) price, USD per 1M tokens. */
-  input: number
+  input?: number
   /** Output (completion) price, USD per 1M tokens. */
-  output: number
+  output?: number
+  /** Fixed price for one request, in USD. */
+  request?: number
   /** Reasoning token price, USD per 1M tokens. */
   reasoning?: number
   /** Cache read price, USD per 1M tokens. */

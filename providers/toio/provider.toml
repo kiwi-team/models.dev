@@ -1,0 +1,9 @@
+# Service metadata: https://newapi.seedsnote.com:444/api/status (accessed 2026-08-20)
+# Pricing: toio-model-price.json, sourced from the public ToioApi pricing endpoint
+# Conversion: quota_per_unit = 500_000 and quota_display_type = USD, so
+# non-expression model_ratio values are multiplied by 2 for USD per million tokens.
+name = "ToIO"
+env = ["TOIO_API_KEY"]
+npm = "@ai-sdk/openai-compatible"
+api = "https://api.toiotech.com/v1"
+doc = "https://toiotech.apifox.cn"

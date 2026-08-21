@@ -1,0 +1,20 @@
+# Metadata factored from the existing Vercel provider entry.
+name = "Seedream 5.0 Lite"
+description = "Efficient ByteDance image model for prompt-driven generation and visual editing"
+family = "seed"
+release_date = "2026-01-28"
+last_updated = "2026-01-28"
+attachment = false
+reasoning = false
+temperature = true
+tool_call = false
+structured_output = false
+open_weights = false
+
+[limit]
+context = 0
+output = 0
+
+[modalities]
+input = ["text"]
+output = ["image"]

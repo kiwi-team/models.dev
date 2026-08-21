@@ -1,0 +1,7 @@
+# Pricing: toio-model-price.json (accessed 2026-08-20)
+# ToioApi ratio conversion: model_ratio 2.5 * 2 USD/MTok; completion_ratio 9.4.
+base_model = "microsoft/mai-image-2.5"
+
+[cost]
+input = 5
+output = 47

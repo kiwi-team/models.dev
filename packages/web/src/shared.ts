@@ -40,6 +40,13 @@ export function formatCost(cost?: number) {
   return cost === undefined ? "-" : `$${cost.toFixed(2)}`;
 }
 
+export function formatRequestCost(cost: number) {
+  return `$${cost.toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 6,
+  })}`;
+}
+
 export function formatNumber(value?: number) {
   return value === undefined ? "-" : value.toLocaleString();
 }
@@ -70,9 +77,15 @@ export function renderModalities(modalities?: string[]) {
     .join("")}</div>`;
 }
 
-export function costSummary(input?: number, output?: number) {
-  if (input === undefined && output === undefined) return "-";
-  return `${formatCost(input)} / ${formatCost(output)}`;
+export function costSummary(input?: number, output?: number, request?: number) {
+  const tokenCost =
+    input === undefined && output === undefined
+      ? undefined
+      : `${formatCost(input)} / ${formatCost(output)}`;
+  const requestCost =
+    request === undefined ? undefined : `${formatRequestCost(request)} / request`;
+
+  return [tokenCost, requestCost].filter(Boolean).join(" + ") || "-";
 }
 
 export function capabilitySummary(capabilities: Array<[string, boolean | undefined]>) {

@@ -1,0 +1,5 @@
+# Pricing: toio-model-price.json (accessed 2026-08-20)
+base_model = "alibaba/qwen-image-3.0-pro"
+
+[cost]
+request = 0.002206

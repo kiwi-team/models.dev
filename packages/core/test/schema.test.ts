@@ -46,6 +46,55 @@ describe("model schema", () => {
     );
   });
 
+  test("accepts request-only pricing", () => {
+    const model = baseModel({
+      cost: {
+        request: 0.24,
+      },
+    });
+
+    expect(AuthoredModel.safeParse(model).success).toBe(true);
+  });
+
+  test("accepts combined token and request pricing", () => {
+    const model = baseModel({
+      cost: {
+        input: 1,
+        output: 2,
+        request: 0.01,
+      },
+    });
+
+    expect(AuthoredModel.safeParse(model).success).toBe(true);
+  });
+
+  test("rejects incomplete token pricing", () => {
+    const model = baseModel({
+      cost: {
+        input: 1,
+      },
+    });
+
+    expect(AuthoredModel.safeParse(model).success).toBe(false);
+  });
+
+  test("rejects empty pricing", () => {
+    const model = baseModel({ cost: {} });
+
+    expect(AuthoredModel.safeParse(model).success).toBe(false);
+  });
+
+  test("rejects token-specific prices without token pricing", () => {
+    const model = baseModel({
+      cost: {
+        request: 0.24,
+        cache_read: 0.1,
+      },
+    });
+
+    expect(AuthoredModel.safeParse(model).success).toBe(false);
+  });
+
   test("requires reasoning_options when reasoning is true", () => {
     const model = baseModel({ reasoning: true });
 

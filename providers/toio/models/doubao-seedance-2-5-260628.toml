@@ -1,0 +1,7 @@
+# Pricing: toio-model-price.json (accessed 2026-08-20)
+# ToioApi marks this entry as token-ratio billing: model_ratio 5.147055 * 2 USD/MTok.
+base_model = "bytedance-seed/seedance-2.5"
+
+[cost]
+input = 10.29411
+output = 10.29411

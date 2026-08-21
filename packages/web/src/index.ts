@@ -14,6 +14,7 @@ interface SearchIndexItem {
   releaseDate?: string;
   inputCost?: number;
   outputCost?: number;
+  requestCost?: number;
   description?: string;
   npm?: string;
   api?: string;
@@ -216,11 +217,22 @@ function formatCompactNumber(value?: number) {
   return compactNumberFormatter.format(value);
 }
 
-function formatCost(input?: number, output?: number) {
-  if (input === undefined && output === undefined) return undefined;
-  const inputText = input === undefined ? "-" : `$${input.toFixed(2)}`;
-  const outputText = output === undefined ? "-" : `$${output.toFixed(2)}`;
-  return `${inputText} / ${outputText}`;
+function formatCost(input?: number, output?: number, request?: number) {
+  const tokenCost =
+    input === undefined && output === undefined
+      ? undefined
+      : `${input === undefined ? "-" : `$${input.toFixed(2)}`} / ${
+          output === undefined ? "-" : `$${output.toFixed(2)}`
+        }`;
+  const requestCost =
+    request === undefined
+      ? undefined
+      : `$${request.toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 6,
+        })} / request`;
+
+  return [tokenCost, requestCost].filter(Boolean).join(" + ") || undefined;
 }
 
 function appendHighlightedText(
@@ -274,7 +286,7 @@ function resultMeta(item: SearchIndexItem) {
       item.context === undefined
         ? undefined
         : `${formatCompactNumber(item.context)} context`,
-      formatCost(item.inputCost, item.outputCost),
+      formatCost(item.inputCost, item.outputCost, item.requestCost),
       item.updated,
     ].filter((value): value is string => Boolean(value));
   }

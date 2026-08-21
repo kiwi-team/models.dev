@@ -155,9 +155,15 @@ With `base_model`, do not restate fields already correct on the lab entry. Still
 
 ### Cost (always USD)
 
-- **All `cost` values are USD per million tokens.** Never publish EUR, CNY, CHF, etc. as if they were USD.
+- **All `cost` values are USD.** Token prices are per million tokens; `request` is per request. Never publish EUR, CNY, CHF, etc. as if they were USD.
 - Convert other currencies and note rate/date in a **top-of-file** comment.
-- Optional keys on cost: `reasoning`, `cache_read`, `cache_write`, `input_audio`, `output_audio`.
+- Optional keys on token cost: `reasoning`, `cache_read`, `cache_write`, `input_audio`, `output_audio`.
+- Fixed per-request pricing uses `request` in USD. Request-only models omit `input` and `output`.
+
+```toml
+[cost]
+request = 0.24
+```
 - **Context-based pricing → `[[cost.tiers]]`**, not `context_over_200k`.
 
 ```toml

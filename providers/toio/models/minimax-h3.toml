@@ -1,0 +1,5 @@
+# Pricing: toio-model-price.json (accessed 2026-08-20)
+base_model = "minimax/minimax-h3"
+
+[cost]
+request = 0.117647

@@ -69,9 +69,10 @@ export const ReasoningOption = z
     },
   );
 
-const Cost = z.object({
-  input: z.number().min(0, "Input price cannot be negative"),
-  output: z.number().min(0, "Output price cannot be negative"),
+const CostShape = z.object({
+  input: z.number().min(0, "Input price cannot be negative").optional(),
+  output: z.number().min(0, "Output price cannot be negative").optional(),
+  request: z.number().min(0, "Request price cannot be negative").optional(),
   reasoning: z.number().min(0, "Reasoning price cannot be negative").optional(),
   cache_read: z
     .number()
@@ -91,24 +92,59 @@ const Cost = z.object({
     .optional(),
 }).strict();
 
-const CostTier = Cost.extend({
+function refineCost<Output extends z.infer<typeof CostShape>, Def extends z.ZodTypeDef, Input>(
+  schema: z.ZodType<Output, Def, Input>,
+) {
+  return schema
+    .refine(
+      (cost) => (cost.input === undefined) === (cost.output === undefined),
+      {
+        message: "Input and output prices must be set together",
+        path: ["input"],
+      },
+    )
+    .refine(
+      (cost) => cost.input !== undefined || cost.request !== undefined,
+      {
+        message: "Must set token prices or a request price",
+        path: ["request"],
+      },
+    )
+    .refine(
+      (cost) =>
+        cost.input !== undefined ||
+        (cost.reasoning === undefined &&
+          cost.cache_read === undefined &&
+          cost.cache_write === undefined &&
+          cost.input_audio === undefined &&
+          cost.output_audio === undefined),
+      {
+        message: "Token-specific prices require input and output prices",
+        path: ["input"],
+      },
+    );
+}
+
+const Cost = refineCost(CostShape);
+
+const CostTier = refineCost(CostShape.extend({
   tier: z
     .object({
       type: z.literal("context").default("context"),
       size: z.number().int().min(0, "Context tier size cannot be negative"),
     })
     .strict(),
-}).strict();
+}).strict());
 
-const AuthoredCost = Cost.extend({
+const AuthoredCost = refineCost(CostShape.extend({
   context_over_200k: z.never().optional(),
   tiers: z.array(CostTier).optional(),
-}).strict();
+}).strict());
 
-const OutputCost = Cost.extend({
+const OutputCost = refineCost(CostShape.extend({
   context_over_200k: Cost.optional(),
   tiers: z.array(CostTier).optional(),
-}).strict();
+}).strict());
 
 const DateString = z
   .string()

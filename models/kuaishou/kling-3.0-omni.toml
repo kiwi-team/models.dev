@@ -1,0 +1,20 @@
+# Metadata consolidated from existing Vercel Kling 3.0 provider entries.
+name = "Kling 3.0 Omni"
+description = "Kuaishou video model for text-to-video, image-to-video, and motion-control workflows"
+family = "ling"
+release_date = "2026-02-05"
+last_updated = "2026-03-04"
+attachment = true
+reasoning = false
+temperature = true
+tool_call = false
+structured_output = false
+open_weights = false
+
+[limit]
+context = 0
+output = 0
+
+[modalities]
+input = ["text", "image", "video"]
+output = ["video"]

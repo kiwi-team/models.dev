@@ -931,6 +931,9 @@ export function formatToml(model: z.infer<typeof SyncedAuthoredModel>) {
     lines.push("", "[cost]");
     if (model.cost.input !== undefined) lines.push(`input = ${formatNumber(model.cost.input)}`);
     if (model.cost.output !== undefined) lines.push(`output = ${formatNumber(model.cost.output)}`);
+    if (model.cost.request !== undefined) {
+      lines.push(`request = ${formatNumber(model.cost.request)}`);
+    }
     if (model.cost.reasoning !== undefined) {
       lines.push(`reasoning = ${formatNumber(model.cost.reasoning)}`);
     }
@@ -954,6 +957,7 @@ export function formatToml(model: z.infer<typeof SyncedAuthoredModel>) {
       }
       if (tier.input !== undefined) lines.push(`input = ${formatNumber(tier.input)}`);
       if (tier.output !== undefined) lines.push(`output = ${formatNumber(tier.output)}`);
+      if (tier.request !== undefined) lines.push(`request = ${formatNumber(tier.request)}`);
       if (tier.reasoning !== undefined) lines.push(`reasoning = ${formatNumber(tier.reasoning)}`);
       if (tier.cache_read !== undefined) lines.push(`cache_read = ${formatNumber(tier.cache_read)}`);
       if (tier.cache_write !== undefined) lines.push(`cache_write = ${formatNumber(tier.cache_write)}`);

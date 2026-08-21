@@ -2525,6 +2525,30 @@ test("formats empty reasoning options outside the interleaved table", () => {
   });
 });
 
+test("formats request-only pricing", () => {
+  const content = formatToml({
+    id: "example/media-model",
+    name: "Example Media Model",
+    description: "Example media model for request pricing regression tests",
+    release_date: "2026-01-01",
+    last_updated: "2026-01-01",
+    attachment: false,
+    reasoning: false,
+    tool_call: false,
+    open_weights: false,
+    cost: { request: 0.24 },
+    limit: { context: 0, output: 0 },
+    modalities: { input: ["text"], output: ["video"] },
+  });
+
+  expect(Bun.TOML.parse(content)).toMatchObject({
+    cost: { request: 0.24 },
+  });
+  expect((Bun.TOML.parse(content) as { cost: unknown }).cost).toEqual({
+    request: 0.24,
+  });
+});
+
 test("formats provider overrides and experimental modes", () => {
   const content = formatToml({
     id: "example/model",

@@ -1,0 +1,5 @@
+# Pricing: toio-model-price.json (accessed 2026-08-20)
+base_model = "openai/dall-e-3"
+
+[cost]
+request = 0.04

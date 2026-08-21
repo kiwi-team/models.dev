@@ -1,0 +1,26 @@
+# https://huggingface.co/Qwen/Qwen2.5-Omni-7B
+name = "Qwen2.5-Omni 7B"
+description = "Open multimodal Qwen model for text, vision, audio, and video understanding and generation"
+family = "qwen"
+release_date = "2025-03-27"
+last_updated = "2025-03-27"
+attachment = false
+reasoning = false
+temperature = true
+knowledge = "2024-04"
+tool_call = true
+structured_output = false
+open_weights = true
+license = "Apache 2.0"
+
+[limit]
+context = 32_768
+output = 2_048
+
+[modalities]
+input = ["text", "image", "audio", "video"]
+output = ["text", "audio"]
+
+[[weights]]
+label = "Hugging Face"
+url = "https://huggingface.co/Qwen/Qwen2.5-Omni-7B"

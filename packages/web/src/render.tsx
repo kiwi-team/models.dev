@@ -13,6 +13,7 @@ import {
   costSummary,
   escapeHtml,
   formatNumber,
+  formatRequestCost,
   knowledgeText,
   renderModalityIcon,
   renderModalities,
@@ -64,6 +65,7 @@ interface ModelEntry {
   providers: ProviderModelEntry[];
   minInputCost?: number;
   minOutputCost?: number;
+  minRequestCost?: number;
 }
 
 interface LabEntry {
@@ -91,6 +93,7 @@ interface SearchIndexItem {
   releaseDate?: string;
   inputCost?: number;
   outputCost?: number;
+  requestCost?: number;
   description?: string;
   npm?: string;
   api?: string;
@@ -245,6 +248,9 @@ function connectProviderEntries(
     model.minOutputCost = minDefined(
       model.providers.map((provider) => provider.model.cost?.output),
     );
+    model.minRequestCost = minDefined(
+      model.providers.map((provider) => provider.model.cost?.request),
+    );
   }
 }
 
@@ -316,6 +322,7 @@ function buildSearchItems(
       releaseDate: metadata.release_date,
       inputCost: model.minInputCost,
       outputCost: model.minOutputCost,
+      requestCost: model.minRequestCost,
       description: metadata.description,
       updated: metadata.last_updated,
       tokens: [
@@ -487,10 +494,15 @@ function modelPageMetadata(model: ModelEntry): PageMetadata {
   const output = metadata.limit?.output
     ? `${formatNumber(metadata.limit.output)} token output`
     : undefined;
-  const cost =
+  const tokenCost =
     model.minInputCost !== undefined || model.minOutputCost !== undefined
       ? `${costSummary(model.minInputCost, model.minOutputCost)} per 1M tokens`
       : undefined;
+  const requestCost =
+    model.minRequestCost === undefined
+      ? undefined
+      : `${formatRequestCost(model.minRequestCost)} per request`;
+  const cost = [tokenCost, requestCost].filter(Boolean).join(" plus ") || undefined;
   const capabilities = capabilitySummary([
     ["tool calling", metadata.tool_call],
     ["reasoning", metadata.reasoning],
@@ -1079,8 +1091,12 @@ function ModelTable(props: {
                 <td data-sort={weightsText(metadata.open_weights)}>
                   <WeightsValue metadata={metadata} />
                 </td>
-                <td data-sort={sortNumber(model.minInputCost)}>
-                  {costSummary(model.minInputCost, model.minOutputCost)}
+                <td data-sort={sortNumber(model.minInputCost ?? model.minRequestCost)}>
+                  {costSummary(
+                    model.minInputCost,
+                    model.minOutputCost,
+                    model.minRequestCost,
+                  )}
                 </td>
                 <td data-sort={sortDate(metadata.release_date)}>
                   {metadata.release_date ?? "-"}
@@ -1175,8 +1191,16 @@ function ProviderModelsTable(props: {
               <td data-sort={sortNumber(entry.model.limit.output)}>
                 {formatNumber(entry.model.limit.output)}
               </td>
-              <td data-sort={sortNumber(entry.model.cost?.input)}>
-                {costSummary(entry.model.cost?.input, entry.model.cost?.output)}
+              <td
+                data-sort={sortNumber(
+                  entry.model.cost?.input ?? entry.model.cost?.request,
+                )}
+              >
+                {costSummary(
+                  entry.model.cost?.input,
+                  entry.model.cost?.output,
+                  entry.model.cost?.request,
+                )}
               </td>
               <td data-sort={booleanText(entry.model.reasoning)}>
                 {booleanText(entry.model.reasoning)}

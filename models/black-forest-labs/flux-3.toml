@@ -1,0 +1,20 @@
+# Metadata consolidated from the existing Vercel Flux 3 entry.
+name = "FLUX.3"
+description = "Black Forest Labs image model for prompt-driven generation and visual workflows"
+family = "flux"
+release_date = "2026-08-04"
+last_updated = "2026-08-04"
+attachment = false
+reasoning = false
+temperature = false
+tool_call = false
+structured_output = false
+open_weights = false
+
+[limit]
+context = 0
+output = 0
+
+[modalities]
+input = ["text"]
+output = ["image"]

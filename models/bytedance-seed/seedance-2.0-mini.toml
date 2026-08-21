@@ -1,0 +1,20 @@
+# First observed in the ToioApi pricing catalog on 2026-08-20.
+name = "Seedance 2.0 Mini"
+description = "Efficient ByteDance video model for prompt-guided generation and image animation"
+family = "seed"
+release_date = "2026-06-15"
+last_updated = "2026-06-15"
+attachment = true
+reasoning = false
+temperature = true
+tool_call = false
+structured_output = false
+open_weights = false
+
+[limit]
+context = 0
+output = 0
+
+[modalities]
+input = ["text", "image"]
+output = ["video"]
